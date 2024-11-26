@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CarRentalMangement.Configurations.Entities
+namespace CarRentalManagement.Configurations.Entities
 {
     public class ColourSeed : IEntityTypeConfiguration<Colour>
     {
