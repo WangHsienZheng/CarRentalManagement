@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarRentalManagement.Migrations
 {
-    [DbContext(typeof(IdentityContext))]
+    [DbContext(typeof(CarRentalManagementContext))]
     [Migration("20241126035154_Initial")]
     partial class Initial
     {

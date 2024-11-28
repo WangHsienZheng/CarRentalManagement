@@ -5,7 +5,7 @@ using CarRentalManagement.Configurations.Entities;
 
 namespace CarRentalManagement.Data
 {
-    public class IdentityContext(DbContextOptions<IdentityContext> options) : IdentityDbContext<CarRentalManagementUser>(options)
+    public class CarRentalManagementContext(DbContextOptions<CarRentalManagementContext> options) : IdentityDbContext<CarRentalManagementUser>(options)
     {
         public DbSet<CarRentalManagement.Domain.Make> Make { get; set; } = default!;
         public DbSet<CarRentalManagement.Domain.Model> Model { get; set; } = default!;

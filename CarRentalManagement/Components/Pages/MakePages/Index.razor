@@ -4,7 +4,7 @@
 @using CarRentalManagement.Domain
 @using CarRentalManagement.Data
 @implements IAsyncDisposable
-@inject IDbContextFactory<CarRentalManagement.Data.IdentityContext> DbFactory
+@inject IDbContextFactory<CarRentalManagement.Data.CarRentalManagementContext> DbFactory
 
 <PageTitle>Index</PageTitle>
 
@@ -29,7 +29,7 @@
 </QuickGrid>
 
 @code {
-    private IdentityContext context = default!;
+    private CarRentalManagementContext context = default!;
 
     protected override void OnInitialized()
     {
