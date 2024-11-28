@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContextFactory<CarRentalManagementContext>(options =>
+builder.Services.AddDbContextFactory<IdentityContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CarRentalManagementContext") ??
 throw new InvalidOperationException("Connection string 'CarRentalManagementContext' not found.")));
 builder.Services.AddQuickGridEntityFrameworkAdapter();
@@ -26,7 +26,7 @@ builder.Services.AddAuthentication(options =>
     .AddIdentityCookies();
 builder.Services.AddIdentityCore<CarRentalManagementUser>(options =>
 options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<CarRentalManagementContext>()
+    .AddEntityFrameworkStores<IdentityContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
 builder.Services.AddSingleton<IEmailSender<CarRentalManagementUser>, IdentityNoOpEmailSender>();
