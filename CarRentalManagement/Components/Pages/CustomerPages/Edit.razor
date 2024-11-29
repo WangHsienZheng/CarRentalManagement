@@ -20,8 +20,28 @@ else
         <div class="col-md-4">
             <EditForm method="post" Model="Customer" OnValidSubmit="UpdateCustomer" FormName="edit" Enhance>
                 <DataAnnotationsValidator />
-                <ValidationSummary role="alert"/>
+                <ValidationSummary role="alert" />
                 <input type="hidden" name="Customer.Id" value="@Customer.Id" />
+                <div class="mb-3">
+                    <label for="drivinglicense" class="form-label">DrivingLicense:</label>
+                    <InputText id="drivinglicense" @bind-Value="Customer.DrivingLicense" class="form-control" />
+                    <ValidationMessage For="() => Customer.DrivingLicense" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address:</label>
+                    <InputText id="address" @bind-Value="Customer.Address" class="form-control" />
+                    <ValidationMessage For="() => Customer.Address" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="contactnumber" class="form-label">ContactNumber:</label>
+                    <InputText id="contactnumber" @bind-Value="Customer.ContactNumber" class="form-control" />
+                    <ValidationMessage For="() => Customer.ContactNumber" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="emailaddress" class="form-label">EmailAddress:</label>
+                    <InputText id="emailaddress" @bind-Value="Customer.EmailAddress" class="form-control" />
+                    <ValidationMessage For="() => Customer.EmailAddress" class="text-danger" />
+                </div>
                 <div class="mb-3">
                     <label for="datecreated" class="form-label">DateCreated:</label>
                     <InputDate id="datecreated" @bind-Value="Customer.DateCreated" class="form-control" />
@@ -59,8 +79,25 @@ else
     [SupplyParameterFromForm]
     private Customer? Customer { get; set; }
 
+    //Create userId string to store the user id, default value is "System".
+    private string userId = "System";
+
+    //Inject the AuthenticationStateProvider to get the user id.
+    @inject AuthenticationStateProvider authenticationStateProvider
+
     protected override async Task OnInitializedAsync()
-    {
+    {   
+        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        // Get the userId claim
+        var userIdClaim = user.FindFirst("userId");
+
+        if (userIdClaim != null)
+        {
+            userId = userIdClaim.Value;
+        }
+
         using var context = DbFactory.CreateDbContext();
         Customer ??= await context.Customer.FirstOrDefaultAsync(m => m.Id == Id);
 
@@ -75,6 +112,13 @@ else
     private async Task UpdateCustomer()
     {
         using var context = DbFactory.CreateDbContext();
+
+        //Set the userId to the UpdatedBy fields.
+        Customer.UpdatedBy = userId;
+
+        //Set the DateUpdated fields to the current date and time.
+        Customer.DateUpdated = DateTime.Now;
+
         context.Attach(Customer!).State = EntityState.Modified;
 
         try
